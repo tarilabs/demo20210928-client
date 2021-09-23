@@ -43,7 +43,6 @@ public class App {
 
     private void demo() {
         initialize();
-        // Use rule services client to send request:
         RuleServicesClient ruleClient = kieServicesClient.getServicesClient(RuleServicesClient.class);
         ServiceResponse<ExecutionResults> executeResponse = ruleClient.executeCommandsWithResults(containerId, batchCommands());
         System.out.println("ServiceResponse.type: " + executeResponse.getType());
@@ -61,21 +60,27 @@ public class App {
     }
 
     public static BatchExecutionCommand batchCommands() {
+        Thing house = new Thing("house", 1000);
+        Thing office = new Thing("office", 200);
+        Thing desk = new Thing("desk",   100);
+        Thing library = new Thing("library",100);
+        Thing box = new Thing("box",     10);
+        Thing key = new Thing("key",      1);
+        
         KieCommands kieCommands = KieServices.Factory.get().getCommands();
         List<Command<?>> commandList = new ArrayList<Command<?>>();
-        commandList.add(kieCommands.newInsert(new Thing("house", 1000)));
-        commandList.add(kieCommands.newInsert(new Thing("office", 200)));
-        commandList.add(kieCommands.newInsert(new Thing("desk",   100)));
-        commandList.add(kieCommands.newInsert(new Thing("library",100)));
-        commandList.add(kieCommands.newInsert(new Thing("box",     10)));
-        Thing key = new Thing("key",      1);
+        commandList.add(kieCommands.newInsert(house));
+        commandList.add(kieCommands.newInsert(office));
+        commandList.add(kieCommands.newInsert(desk));
+        commandList.add(kieCommands.newInsert(library));
+        commandList.add(kieCommands.newInsert(box));
         commandList.add(kieCommands.newInsert(key));
 
-        commandList.add(kieCommands.newFireAllRules("numberOfFiredRules"));
+        commandList.add(kieCommands.newFireAllRules());
 
-        commandList.add(kieCommands.newQuery("qid", "findContainment", new Object[] { Variable.v, key }));
+        // commandList.add(kieCommands.newQuery("qid", "findContainment", new Object[] { Variable.v, key }));
         // commandList.add(kieCommands.newQuery("qid", "isContained", new Object[] { key }));
-        // commandList.add(kieCommands.newQuery("qid", "allContainments"));
+        commandList.add(kieCommands.newQuery("qid", "allContainments"));
 
         BatchExecutionCommand batch = kieCommands.newBatchExecution(commandList);
         return batch;
