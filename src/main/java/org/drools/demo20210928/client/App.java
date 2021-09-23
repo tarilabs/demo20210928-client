@@ -60,12 +60,12 @@ public class App {
     }
 
     public static BatchExecutionCommand batchCommands() {
-        Thing house = new Thing("house", 1000);
-        Thing office = new Thing("office", 200);
-        Thing desk = new Thing("desk",   100);
+        Thing house   = new Thing("house", 1000);
+        Thing office  = new Thing("office", 200);
+        Thing desk    = new Thing("desk",   100);
         Thing library = new Thing("library",100);
-        Thing box = new Thing("box",     10);
-        Thing key = new Thing("key",      1);
+        Thing box     = new Thing("box",     10);
+        Thing key     = new Thing("key",      1);
         
         KieCommands kieCommands = KieServices.Factory.get().getCommands();
         List<Command<?>> commandList = new ArrayList<Command<?>>();
