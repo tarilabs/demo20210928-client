@@ -1,0 +1,29 @@
+import org.drools.demo20210928.model.Thing;
+import org.drools.demo20210928.model.Containment;
+
+rule R when
+  $container : Thing()
+  $contained : Thing( volume < $container.volume )
+  not Containment( contained == $contained )
+  not Thing( volume < $container.volume, volume > $contained.volume )
+then
+  insert(new Containment($container, $contained));
+end
+
+query allContainments
+    $c: Containment()
+end
+
+query findContainment( Thing x, Thing y )
+    Containment( x, y;)
+    or
+    ( Containment(z, y;) and ?findContainment(x, z;) )
+end
+
+query isContained( Thing y )
+    findContainment(x, y;)
+end
+
+query contains( Thing y )
+    findContainment(y, x;)
+end
